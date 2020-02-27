@@ -1,23 +1,70 @@
 window.onload = function() {
-    var oDiv1 = document.querySelector('.calendar');
-    var aLi = oDiv1.getElementsByTagName('li');
-    var oDiv2 = document.querySelector('.content');
-    var oStrong = oDiv2.querySelector('strong');
-    var oP = oDiv2.querySelector('p');
-    var arr = ['元旦：1月1日至3日放假三天。', '春节：2月2日至8日放假7天。',
-        '妇女节：3月8日妇女节，与我无关。', '清明节：4月3日至5日放假3天', '劳动节：4月30日至5月2日放假3天。',
-        '端午节：6月4日至6日放假3天。', '小暑：7月7日小暑。不放假。', '七夕节：8月6日七夕节。不放假。', '中秋节：9月10日至12日放假3天。', '国庆节：10月1日至7日放假7天。', '立冬：11月8日立冬。不放假。', '艾滋病日:12月1日</br>废除奴隶制国际日:12月2日。'
-    ];
-    oP.innerHTML = arr[1];
-    for (let i = 0; i < aLi.length; i++) {
-        aLi[i].index = i;
-        aLi[i].onmouseover = function() {
-            for (let i = 0; i < aLi.length; i++) {
-                aLi[i].className = ''
+    var oBtn = document.querySelector('.btn');
+    var oTxt = document.querySelector('.txt');
+    var oDiv2 = document.querySelector('.div2');
+    var aLi = oDiv2.querySelectorAll('li');
+    var randNum = Math.ceil(100 * Math.random());
+    var count = 0;
+    oBtn.onclick = guess;
+    oTxt.onkeydown = function(e) {
+        if (e.keyCode == 13)
+            guess()
+        else return
+    }
+
+    function guess() {
+        if (isNaN(parseInt(oTxt.value))) {
+            alert('请输入一个0~100以内的数字！');
+        } else {
+            count++;
+            if (count == 10) {
+                oTxt.disabled = true;
+                oBtn.disabled = true;
+                oBtn.className = 'btn btn1';
             }
-            this.className = 'current'
-            oStrong.innerText = this.index + 1;
-            oP.innerHTML = arr[this.index];
+            oDiv2.style.display = 'block';
+            if (oTxt.value != randNum) {
+                oTxt.value > randNum ? aLi[2].innerText = '刚才你猜高了' : aLi[2].innerText = '刚才你猜低了';
+                aLi[0].innerText += oTxt.value + '\xa0';
+                if (count == 10) {
+                    aLi[1].innerText = '!!!GAME OVER!!!';
+                    createBtn();
+                } else
+                    aLi[1].innerText = '很遗憾，你猜错了';
+                aLi[1].className = 'error';
+                oTxt.value = '';
+            } else {
+                aLi[1].innerText = '恭喜你，猜对了';
+                aLi[1].className = 'success';
+                aLi[2].innerText = '';
+                count = 0;
+                oTxt.disabled = true;
+                oBtn.disabled = true;
+                oBtn.className = 'btn btn1';
+                createBtn();
+            }
         }
+    }
+
+    function createBtn() {
+        var newBtn = document.createElement('input');
+        var newLi = document.createElement('li');
+        var oUl = oDiv2.querySelector('ul');
+        newBtn.type = 'button';
+        newBtn.className = 'btn';
+        newBtn.style.marginLeft = '0px';
+        newBtn.value = '开始新游戏';
+        newBtn.onclick = function() {
+            oTxt.disabled = false;
+            oBtn.disabled = false;
+            aLi[0].innerText = '上次猜的数：';
+            oBtn.className = 'btn';
+            oDiv2.style.display = 'none';
+            oUl.removeChild(newLi);
+            oTxt.value = '';
+            randNum = Math.ceil(100 * Math.random());
+        }
+        newLi.appendChild(newBtn);
+        oUl.appendChild(newLi);
     }
 }
