@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动实例</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        .div {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            border: 1px solid #cccccc;
+            box-shadow: 2px 3px 2px rgba(204, 204, 204, 0.74);
+        }
+        
+        .div1 {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgb(178, 221, 219);
+            opacity: 0.5;
+        }
+        
+        .div0 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 10px;
+            text-align: center;
+        }
+        
+        .div2 {
+            width: 40px;
+            height: 40px;
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(94, 94, 85, 0.541);
+            color: #fff;
+            text-align: center;
+            line-height: 40px;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .div3 {
+            position: absolute;
+            top: 200px;
+            padding: 16px;
+            width: 100%;
+            font-size: 24px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body style="height: 3000px;">
+    <div class="div0">
+        <button class="btn">点击开始运动</button>
+        <button class="btn1">点击出现文字</button>
+    </div>
+    <div class="div">
+        <div class="div1">
+        </div>
+        <div class="div3">
+        </div>
+    </div>
+    <div class="div2">
+        &#8593
+    </div>
+</body>
+<script>
+    var oBtn = document.querySelector('.btn');
+    var oBtn1 = document.querySelector('.btn1');
+    var oDiv1 = document.querySelector('.div1');
+    var oDiv2 = document.querySelector('.div2');
+    var oDiv3 = document.querySelector('.div3');
+    var timer;
+
+    //切片文字
+    oBtn1.onclick = function() {
+        var str = '习近平同志重要讲话 "不忘初心 牢记使命"主题教育 教育思想大讨论 成 大 先 锋 成都大学第七次党代会 天府文化研究院 成 大 讲 坛 人才招聘';
+        var index = 0;
+        oDiv3.innerHTML = '';
+        clearInterval(timer1);
+        var timer1 = setInterval(function() {
+            if (index <= str.length) {
+                oDiv3.innerHTML = str.slice(0, index);
+                index++;
+            } else
+                clearInterval(timer1);
+        }, 30)
+    }
+
+
+    //置顶效果
+    window.onscroll = function() {
+        var oScrollTop = document.documentElement.scrollTop;
+        console.log(oScrollTop);
+        if (oScrollTop >= 300)
+            move2(oDiv2, {
+                "opacity": 100
+            })
+        else
+            move2(oDiv2, {
+                "opacity": 0
+            })
+    }
+    oDiv2.onclick = function() {
+        var timer = setInterval(function() {
+            var oScrollTop = document.documentElement.scrollTop;
+            var speed = (0 - oScrollTop) / 6;
+            speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+            if (oScrollTop == 0)
+                clearInterval(timer)
+            else
+                window.scrollTo(0, oScrollTop + speed);
+        }, 30)
+    }
+
+
+
+    //运动实例
+    //1、单个样式变化（不包含opacity）
+    function move(obj, attr, cur) {
+        clearInterval(timer);
+        timer = setInterval(function() {
+            var attrVal = parseInt(getComputedStyle(obj, null)[attr]);
+            var speed = (cur - attrVal) / 6;
+            obj.style[attr] = speed + attrVal + 'px';
+            if (cur == attrVal)
+                clearInterval(timer);
+        }, 30)
+    }
+
+    //2、多个样式变化（不包含opacity）
+    function move1(obj, json, fned) {
+        clearInterval(timer);
+        timer = setInterval(function() {
+            var attrVal = null;
+            for (attr in json) {
+                attrVal = parseInt(getComputedStyle(obj, null)[attr])
+                var speed = (json[attr] - attrVal) / 6;
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                obj.style[attr] = speed + attrVal + 'px';
+                if (json[attr] == attrVal) {
+                    clearInterval(timer);
+                    if (fned)
+                        fned();
+                }
+            }
+        }, 30)
+    }
+
+    //3、多个样式变化（包含opacity）
+    function move2(obj, json, fned) {
+        clearInterval(timer);
+        timer = setInterval(function() {
+            var attrVal = null;
+            for (attr in json) {
+                if (attr == 'opacity') {
+                    attrVal = parseInt(parseFloat(getComputedStyle(obj, null)[attr]) * 100)
+                } else {
+                    attrVal = parseInt(getComputedStyle(obj, null)[attr]);
+                }
+                var speed = (json[attr] - attrVal) / 8;
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                if (attr == 'opacity')
+                    obj.style[attr] = (speed + attrVal) / 100;
+                else
+                    obj.style[attr] = speed + attrVal + 'px';
+                if (json[attr] == attrVal) {
+                    json[attr] == attrVal;
+                    clearInterval(timer);
+                    if (fned)
+                        fned();
+                }
+            }
+        }, 30)
+    }
+
+    oBtn.onclick = function() {
+        move2(oDiv1, {
+            "width": 300
+        }, function() {
+            move2(oDiv1, {
+                "height": 200,
+            }, function() {
+                move2(oDiv1, {
+                    "opacity": 100
+                }, )
+            });
+        })
+    }
+</script>
+
+</html>
