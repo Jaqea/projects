@@ -8,7 +8,7 @@
 - 将文件部署到本地服务器上
 - 获取服务器下文件数据
 
-![图片1](C:\Users\Lenovo\Desktop\projects\images\图片1.png)
+![图片1](./images/图片1.png)
 
 提交形式：
 
