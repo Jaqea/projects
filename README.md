@@ -8,7 +8,7 @@
 - 将文件部署到本地服务器上
 - 获取服务器下文件数据
 
-![image-20200312213043797](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200312213043797.png)
+![图片1](C:\Users\Lenovo\Desktop\projects\images\图片1.png)
 
 提交形式：
 
