@@ -1,0 +1,31 @@
+[{
+        "Name": "Captain America",
+        "Age": "97",
+        "SecretIdentity": "Steven Rogers",
+        "Powers": [" plug-in shields", "super soldier serum", "leadership ", "fighting skills"]
+    },
+    {
+        "Name": "Spider-Man",
+        "Age": "18",
+        "SecretIdentity": "Peter Benjamin Parker",
+        "Powers": ["punching through the wall", "vision", "smell", "hearing"]
+    },
+    {
+        "Name": "Iron Man",
+        "Age": "99",
+        "SecretIdentity": "Jr. Tony Stark",
+        "Powers": ["a devastating repulsion launcher on both palms", "Tracking bullets on the shoulders"]
+    },
+    {
+        "Name": "Captain Marvel",
+        "Age": "30",
+        "SecretIdentity": "Carol Danvers",
+        "Powers": ["suffering for extreme pain", "awesome physical damage resistance", "predictability"]
+    },
+    {
+        "Name": "Thor",
+        "Age": "36",
+        "SecretIdentity": "Thor Odinson",
+        "Powers": ["has a body density three times that of a mortal", "The weapon's function is to puncture anything"]
+    }
+]
