@@ -4,52 +4,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>简单Ajax请求</title>
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+        
+        body {
+            background: url('./images/bgc.jpg');
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .box {
+            padding: 8px 16px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 30px;
+        }
+        
+        .box>div:first-child {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        img {
+            height: 150px;
+        }
+        
+        .input {
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type='text'] {
+            width: 480px;
+            padding: 10px 9px 10px 7px;
+        }
+        
+        input[type='button'] {
+            width: 104px;
+            height: 40px;
+            line-height: 4040px;
+            font-size: 16px;
+        }
+        
+        .tabList {
+            width: 480px;
+            background: #fff;
+        }
+        
+        .tabItem {
+            padding: 8px 10px;
+            font-size: 14px;
+            color: #000;
+            cursor: pointer;
+        }
+        
+        .tabItem:hover {
+            background: #ededed;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="div1">
-        <h2>Super Heros</h2>
-        <div class="div11">
-            <div>
-                <div>
-                    <img src="./images/1.jpg" alt="jpg">
-                </div>
-                <ul id="ul">
-                    <div class="div">点击导入信息</div>
-                </ul>
+    <div class="box">
+        <div>
+            <div class="img">
+                <img src="./images/baidu.png" alt="百度图片">
             </div>
-            <div>
-                <div><img src="./images/2.jpg" alt="jpg"></div>
-                <ul id="ul">
-                    <div class="div">点击导入信息</div>
-                </ul>
-
-            </div>
-            <div>
-                <div><img src="./images/3.jpg" alt="jpg"></div>
-                <ul id="ul">
-                    <div class="div">点击导入信息</div>
-                </ul>
-
-            </div>
-            <div>
-                <div><img src="./images/4.jpg" alt="jpg"></div>
-                <ul id="ul">
-                    <div class="div">点击导入信息</div>
-                </ul>
-
-            </div>
-            <div>
-                <div><img src="./images/5.jpg" alt="jpg"></div>
-                <ul id="ul">
-                    <div class="div">点击导入信息</div>
-                </ul>
+            <div class="input">
+                <input type="text" id="txt">
+                <input type="button" id="btn" value="百度一下">
             </div>
         </div>
-        <h3>But I want something just like this</h3>
+        <div class="tabList">
+            <ul>
+            </ul>
+        </div>
     </div>
 </body>
+<script>
+    var oTxt = document.getElementById('txt');
+    var oBtn = document.getElementById('btn');
+    var oTabs = document.querySelector('.tabList');
+    var oUl = document.querySelector('ul');
+
+    oTxt.onkeydown = function(e) {
+        if (e.keyCode == 13) {
+            var oA = document.createElement('a');
+            oA.href = 'https://www.baidu.com/s?wd=' + oTxt.value;
+            oA.click();
+        } else
+            jsonp(oTxt.value);
+    }
+    oBtn.onclick = function() {
+        var oA = document.createElement('a');
+        oA.href = 'https://www.baidu.com/s?wd=' + oTxt.value;
+        oA.click();
+    }
+
+    function createLi(value) {
+        var oLi = document.createElement('li');
+        oLi.className = 'tabItem';
+        oLi.innerHTML = value;
+        oLi.onclick = function() {
+            var oA = document.createElement('a');
+            oA.href = 'https://www.baidu.com/s?wd=' + value;
+            oA.click();
+        }
+        oUl.appendChild(oLi);
+    }
+
+    function callback(res) {
+        var arr = res.g;
+        var aLi = oUl.querySelectorAll('li');
+        for (var j = 0; j < aLi.length; j++)
+            oUl.removeChild(oUl.children[0]);
+        if (arr) {
+            for (var i = 0; i < arr.length; i++) {
+                createLi(arr[i].q);
+            }
+        }
+    }
+
+    function jsonp(data) {
+        var oScript = document.createElement('script');
+        oScript.src = 'https://www.baidu.com/sugrec?&prod=pc&wd=' + data + '&cb=callback';
+        document.body.appendChild(oScript);
+        document.body.removeChild(oScript);
+    }
+</script>
 
 </html>
