@@ -5,144 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            list-style: none;
-            text-decoration: none;
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=2EhGXXPPC798AQ1yarX1kOj3ujodkhTQ"></script>
+    <style type="text/css">
+        html {
+            height: 100%
         }
         
         body {
-            background: url('./images/bgc.jpg');
-            width: 100%;
             height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
+            margin: 0px;
+            padding: 0px
         }
         
-        .box {
-            padding: 8px 16px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 30px;
-        }
-        
-        .box>div:first-child {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        img {
-            height: 150px;
-        }
-        
-        .input {
-            display: flex;
-            align-items: center;
-        }
-        
-        input[type='text'] {
-            width: 480px;
-            padding: 10px 9px 10px 7px;
-        }
-        
-        input[type='button'] {
-            width: 104px;
-            height: 40px;
-            line-height: 4040px;
-            font-size: 16px;
-        }
-        
-        .tabList {
-            width: 480px;
-            background: #fff;
-        }
-        
-        .tabItem {
-            padding: 8px 10px;
-            font-size: 14px;
-            color: #000;
-            cursor: pointer;
-        }
-        
-        .tabItem:hover {
-            background: #ededed;
+        #container {
+            height: 100%
         }
     </style>
 </head>
 
 <body>
-    <div class="box">
-        <div>
-            <div class="img">
-                <img src="./images/baidu.png" alt="百度图片">
-            </div>
-            <div class="input">
-                <input type="text" id="txt">
-                <input type="button" id="btn" value="百度一下">
-            </div>
-        </div>
-        <div class="tabList">
-            <ul>
-            </ul>
-        </div>
-    </div>
+    <div id="container"></div>
 </body>
 <script>
-    var oTxt = document.getElementById('txt');
-    var oBtn = document.getElementById('btn');
-    var oTabs = document.querySelector('.tabList');
-    var oUl = document.querySelector('ul');
-
-    oTxt.onkeydown = function(e) {
-        if (e.keyCode == 13) {
-            var oA = document.createElement('a');
-            oA.href = 'https://www.baidu.com/s?wd=' + oTxt.value;
-            oA.click();
-        } else
-            jsonp(oTxt.value);
-    }
-    oBtn.onclick = function() {
-        var oA = document.createElement('a');
-        oA.href = 'https://www.baidu.com/s?wd=' + oTxt.value;
-        oA.click();
-    }
-
-    function createLi(value) {
-        var oLi = document.createElement('li');
-        oLi.className = 'tabItem';
-        oLi.innerHTML = value;
-        oLi.onclick = function() {
-            var oA = document.createElement('a');
-            oA.href = 'https://www.baidu.com/s?wd=' + value;
-            oA.click();
+    var map = new BMapGL.Map("container");
+    var point = new BMapGL.Point(116.404, 39.915);
+    map.centerAndZoom(point, 11);
+    var geolocation = new BMapGL.Geolocation();
+    geolocation.getCurrentPosition(function(r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMapGL.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+        } else {
+            alert('failed' + this.getStatus());
         }
-        oUl.appendChild(oLi);
-    }
-
-    function callback(res) {
-        var arr = res.g;
-        var aLi = oUl.querySelectorAll('li');
-        for (var j = 0; j < aLi.length; j++)
-            oUl.removeChild(oUl.children[0]);
-        if (arr) {
-            for (var i = 0; i < arr.length; i++) {
-                createLi(arr[i].q);
-            }
-        }
-    }
-
-    function jsonp(data) {
-        var oScript = document.createElement('script');
-        oScript.src = 'https://www.baidu.com/sugrec?&prod=pc&wd=' + data + '&cb=callback';
-        document.body.appendChild(oScript);
-        document.body.removeChild(oScript);
-    }
+    }, {
+        enableHighAccuracy: true
+    })
+    setTimeout(function() {
+        map.setZoom(14);
+    }, 2000); //2秒后放大到14级
+    map.enableScrollWheelZoom(true);
+    map.disableDragging(); //禁止拖拽
+    setTimeout(function() {
+        map.enableDragging(); //两秒后开启拖拽
+        //map.enableInertialDragging();   //两秒后开启惯性拖拽
+    }, 2000);
 </script>
 
 </html>
