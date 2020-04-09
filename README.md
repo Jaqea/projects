@@ -1,11 +1,9 @@
-## 第十一次作业
+### 期末项目
 
-表单验证
+QQ音乐
 
 思路：
 
-- 用户名
-- 密码
+- 网易云API：https://zhuanlan.zhihu.com/p/30246788
+- `Audio` 属性方法：https://www.cnblogs.com/zhangwei595806165/p/5507774.html
 
-- 电话号码
-- 邮箱
